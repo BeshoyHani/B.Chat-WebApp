@@ -1,0 +1,106 @@
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/">B Chat</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+
+       <% if(userId){ %>
+
+        <input id="userID" type="hidden" name="userId" value="<%= userId%>">
+
+        <!--Navbar Menu-->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="/chat/group/all">Groups</a>
+              </li>
+
+              <!--Friend Request menu-->
+              <li class="nav-item dropdown">
+                <a id="friendRequestMenuBtn" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Friend Requests
+                  <span class="badge btn-danger"></span>
+                </a>
+
+
+                <div id="friendRequestDDM" class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                <% if(friendRequests !== undefined){ %>
+                    <% for(let req of friendRequests){ %>
+                        <a class="dropdown-item" href="/profile/<%= req.id%>"> <%=req.name%> </a>
+                    <% } %>
+                <% } %>
+
+                  <a class="dropdown-item" href="/friend/friend-requests">All Requests</a>
+                  
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="/friend/sent-requests">Sent Requests</a>
+                </div>
+              </li>
+
+              <!--Create Group Btn-->
+              <li class="nav-item  rounded">
+                <a class="nav-link" href="/chat/group/create">Create Group</a>
+              </li>
+
+            </ul>
+        </div>
+    <% } %>
+
+        <!-- Search box and user drop menu -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="navbar-nav me-auto mb-2 mb-lg-0"> </div>
+
+            <% if(userId){ %>
+            <form class="d-flex" method='get' action="/search">
+                <input name="keyword" class="form-control me-2" required type="search" placeholder="Search" aria-label="Search"  autocomplete="on">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+            <% } %>
+
+            <ul class="navbar-nav d-flex">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                        aria-expanded="false">
+                        <% if(userId){ %>
+                            <%= userName%>
+                        <% }else{ %>
+                            Account
+                        <% } %> 
+                    </a>
+                    <ul class="dropdown-menu">
+                        
+                        <% if(userId === undefined){ %>
+                        <li><a class="dropdown-item" href="/login">Login</a></li>
+                        <li><a class="dropdown-item" href="/signup">Signup</a></li>
+                        <% }else { %>
+                        <li>
+                            <a class="dropdown-item d-flex justify-content-center" href="/profile">
+                                <img src="/profile/<%=userImage%>" class="rounded-circle" width="100px" height="100px" alt="<%= userName%>"
+                                style="object-fit: cover; object-position: 0 25%;" >
+                            </a>
+                        </li>
+                        
+
+                        <li><a class="dropdown-item" href="/friend/all-friends">Friends</a></li>
+                        <li><a class="dropdown-item" href="/friend/friend-requests">Friend Requests</a></li>
+                        
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li class="d-flex justify-content-center  w-100">
+                            <form action="/logout" method="POST">
+                                <input type="submit" value="Logout" class="btn btn-danger">
+                            </form>
+                        </li>
+
+                        <% } %>
+                        
+                    </ul>
+            </ul>
+        </div>
+    </div>
+</nav>

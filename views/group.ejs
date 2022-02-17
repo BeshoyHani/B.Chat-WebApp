@@ -1,0 +1,29 @@
+<%- include('parts/header')%>
+<%- include('parts/navbar')%>
+
+<div id="onlineUserCard" class="container py-4 d-flex row">
+
+    <% for(let group of groups){ %>
+    <div class="card rounded d-flex align-items-start my-3 mx-3 col-sm-8 col-md-6 col-lg-4 col-xl-4">
+        
+        <div class="card-body d-flex  align-items-center py-2 justify-content-center">
+            
+            <img src="/group/<%= group.image%>" width="120px" height="120px" class="mr-3 rounded-circle" >
+
+            <div>
+                <h4 class="card-title">
+                    <a href="/chat/group/<%= group._id%>" class="text-decoration-none text-reset">
+                        <%= group.name %>
+                    </a>
+                </h4>
+
+                <a href="/chat/group/<%= group._id%>" class="btn btn-primary d-flex column justify-content-center w-75">Chat</a>
+            </div>
+        </div>
+    </div>
+    <% } %>
+</div>
+
+<%- include('parts/footer')%>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/sockets/init.js"></script>

@@ -1,0 +1,125 @@
+<%- include('parts/header')%>
+<%- include('parts/navbar')%>
+
+
+<div class="container d-flex justify-content-center">
+    <div class="row d-flex justify-content-center">
+        <div class="col col-12 col-md-6 input-group d-flex justify-content-center">
+            <div class="mx-2 my-2" style="width: 18rem;">
+                <img src="/profile/<%=friend.image%>" class="card-img-top rounded-circle" alt="<%= friend.username%>"
+                 style="object-fit: cover; object-position: 0 25%;">
+
+                <div class="card-body d-flex justify-content-center">
+                    <h1><span class="label label-default"><%= friend.username%></span></h1>                       
+                </div>
+            </div>
+        </div>
+        <div class="card mx-2 my-2 w-100 " style="width: 18rem;">
+            <div class="card-body">
+                
+                <!--Form to manage all friend request operations-->
+               <form method="post" id="friendRequestForm">
+                   <input id="myId" type="hidden" name="myId" value="<%=userId %>"/>
+                   <input id="myUsername" type="hidden" name="myUsername" value="<%=userName %>"/>
+                   <input id="myImage" type="hidden" name="myImage" value="<%=userImage %>"/>
+                   <input id="myStatus" type="hidden" name="myStatus" value="<%=userStatus %>"/>
+
+                   <input id="friendId" type="hidden" name="friendId" value="<%=friend._id %>"/>
+                   <input id="friendUsername" type="hidden" name="friendUsername" value="<%=friend.username %>"/>
+                   <input id="friendImage" type="hidden" name="friendImage" value="<%=friend.image %>"/>
+                   <input id="friendStatus" type="hidden" name="friendStatus" value="<%=friend.status %>"/>
+
+                    <!-- if The current user opens another user profile -->
+                    <% if(!isOwner && userId !==undefined){ %>
+
+                        <!-- if they are friend then he can unfriend-->
+                        <% if(areFriends){ %>
+                            <div class="d-flex flex-column align-items-center py-2">
+                                <button type="submit" class="btn btn-warning btn-circle btn-xl d-flex justify-content-center" formaction="/friend/unfriend"> 
+                                    <img src="/icons/Unfriend.png" width="35px" height="35px">
+                                </button>
+                                <strong class="text-primary font-weight-bold">Unfriend</strong>
+                            </div>
+
+                        <!-- if I sent a friend request, I can cancel it-->
+                        <%} else if(hasSentRequest){ %>
+                            <div class="d-flex flex-column align-items-center py-2">
+                                <button type="submit" class="btn btn-danger btn-circle btn-xl d-flex justify-content-center" formaction="/friend/cancel"> 
+                                    <img src="/icons/cross.png" width="35px" height="35px">
+                                </button>
+                                <strong class="text-primary font-weight-bold">Cancel Request</strong>
+                            </div>
+
+                        <!-- if I received a request, I can accept or cancel it-->
+                        <% } else if(hasReceivedRequest){ %>
+                            <div class="d-flex align-items-center py-2 justify-content-center">
+                                <button type="submit" class="btn btn-outline-success mx-2 px-4" formaction="/friend/accept"> 
+                                Accept
+                                </button>
+
+                                <button type="submit" class="btn btn-danger mx-2 px-4" formaction="/friend/reject"> 
+                                    Reject
+                                </button>
+                            </div>
+
+                        
+                        <% }else if(!areFriends){ %>
+                            <div class="d-flex flex-column align-items-center py-2">
+                                <button id="addBtn" type="submit" class="btn btn-primary btn-circle btn-xl d-flex justify-content-center" > 
+                                    <img src="/icons/user-plus-solid.png" width="45px" height="40px">
+                                </button>
+                                <strong class="text-primary font-weight-bold">Add Friend</strong>
+                            </div>
+                        <% } %>
+
+                    <%}%>
+               </form>
+
+               <!-- # Friends -->
+               <div class="input-group mb-3 d-flex justify-content-center">
+                     <strong>Friend of: <%= friend.friends.length%> friend<% if(friend.friends.length>1){%>s <%}%></strong>    
+               </div>
+               
+               <% if(isOwner){ %>
+                <!-- email -->
+                <div class="input-group mb-3">
+                    <input class="form-control py-2" type="email" disabled name="email" value="<%= friend.email%>" >    
+                </div>
+                <% } %>
+
+                <form method="pOST" enctype="multipart/form-data">
+                    <!-- name -->
+                    <div class="input-group mb-3">
+                        <input class="form-control py-2 mr-2" type="text" name="username"  required="required"
+                         value="<%= friend.username%>" placeholder="Username" <% if(!isOwner){ %> disabled <% } %> >
+                        
+                        <input class="form-control py-2 ml-2" type="text" name="status"  required="required"
+                         value="<%= friend.status%>" placeholder="Status" <% if(!isOwner){ %> disabled <% } %> >
+                        
+                    </div>
+
+                    <% if(isOwner){ %>
+                    <!-- image -->
+                    <div class="input-group mb-3">
+                        <input type="file" accept="image/*" name="image" class="form-control">
+                    </div>
+                    
+                    <div class="input-group-append d-flex justify-content-center">
+                        <input class="btn btn-outline-success" type="submit" value="Save" formaction="/profile/update">
+                    </div>
+
+                    <% } %>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('parts/footer')%>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/sockets/init.js"></script>
+
+<% if(!isOwner && !areFriends && !hasReceivedRequest && !hasSentRequest){ %>
+    <script src="/js/sockets/friend.js"></script>
+<% } %>

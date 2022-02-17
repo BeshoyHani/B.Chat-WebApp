@@ -1,0 +1,60 @@
+<%- include('parts/header')%>
+<%- include('parts/navbar')%>
+
+<% if(authError){ %>
+  <div class="container text-center mt-3 col d-flex justify-content-center">
+    <div class="container">
+      <div class="alert alert-danger my-3">
+          <%=authError%>
+      </div>
+    </div>
+  </div>
+    <% } %>
+
+<div class="container text-center mt-3 col d-flex justify-content-center">
+
+  <div class="card w-50" style="width: 18rem;">
+    <div class="card-body">
+      <h3 class="card-title bg-light text-primary py-2">Login</h3>
+
+      <form action="/login" method="POST">
+
+        <div class="mb-3 row">
+          <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
+          <div class="col-sm-10">
+            <input type="email" name="email" class="form-control" id="staticEmail" placeholder="email@example.com">
+          </div>
+        </div>
+        <%
+          let emailError = validateInput.find(err => err.param === 'email');
+          if(emailError){
+        %>
+            <div class="alert alert-danger">
+              <%=emailError.msg%>
+            </div>
+           <% } %>
+
+
+        <div class="mb-3 row">
+          <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+          <div class="col-sm-10">
+            <input type="password" name="password" class="form-control" id="inputPassword">
+          </div>
+        </div>
+        <%
+          let passwordError = validateInput.find(err => err.param === 'password');
+          if(passwordError){
+        %>
+            <div class="alert alert-danger">
+              <%=passwordError.msg%>
+            </div>
+           <% } %>
+
+
+        <input type="submit" value="Login" class="btn btn-primary">
+      </form>
+
+    </div>
+  </div>
+</div>
+<%- include('parts/footer')%>

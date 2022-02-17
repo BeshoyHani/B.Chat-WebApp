@@ -1,0 +1,68 @@
+<%- include('parts/header')%>
+    <%- include('parts/navbar')%>
+
+        <div class="container my-4">
+
+            <div class="row">
+
+                <% if(requests.length === 0) {%>
+                    <div class="alert alert-warning d-flex align-items-center py-2 justify-content-center">
+                        <% if(type == 'recieved'){ %>
+                                You currently have no friend requests !
+                        <% }else{ %>
+                                 You have no sent friend requests !
+                        <% } %>
+                    </div>
+                <% }else { %>
+
+                <% for(let friend of requests) { %>
+                    <div class="col col-12 col-md-6 col-lg-4 col-xl-3 pb-3">
+                        <div class="card" style="width: 18rem;">
+                            <img src="/profile/<%=friend.image%>" class="card-img-top" alt="<%= friend.name%>"
+                                 style="object-fit: cover; object-position: 0 25%;">
+                            <div class="card-body">
+                                <h5 class="card-title d-flex justify-content-center">
+                                    <a href="/profile/<%=friend.id%>">
+                                        <%=friend.name%>
+                                    </a>
+                                </h5>
+
+                                <form action="/cart" method="POST">
+                                    <input type="hidden" name="myId" value="<%=userId %>" />
+                                    <input type="hidden" name="myUsername" value="<%=userName %>" />
+                                    <input type="hidden" name="myImage" value="<%=userImage %>" />
+                                    <input type="hidden" name="friendId" value="<%=friend.id %>" />
+                                    <input type="hidden" name="friendUsername" value="<%=friend.name %>" />
+                                    <input type="hidden" name="friendImage" value="<%=friend.image %>" />
+
+                                    <% if(type==="recieved" ){ %>
+                                        <div class="d-flex align-items-center py-2 justify-content-center">
+                                            <button type="submit" class="btn btn-outline-success mx-2 px-4" formaction="/friend/accept"> 
+                                            Accept
+                                            </button>
+            
+                                            <button type="submit" class="btn btn-danger mx-2 px-4" formaction="/friend/reject"> 
+                                                Reject
+                                            </button>
+                                        </div>
+
+                                    <% }else{ %>
+                                        <div class="d-flex flex-column align-items-center py-2">
+                                            <button type="submit" class="btn btn-danger btn-circle btn-xl d-flex justify-content-center" formaction="/friend/cancel"> 
+                                                <img src="/icons/cross.png" width="35px" height="35px">
+                                            </button>
+                                            <strong class="text-primary font-weight-bold">Cancel Request</strong>
+                                        </div>
+                                    <% } %>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <% } %>
+                <% } %>
+            </div>
+        </div>
+
+        <%- include('parts/footer')%>

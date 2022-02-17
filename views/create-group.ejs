@@ -1,0 +1,51 @@
+<%- include('parts/header')%>
+<%- include('parts/navbar')%>
+
+<div class="container py-4 d-flex justify-content-center text-center">
+    <div class="card w-50">
+        <div class="card-body ">
+          <h3 class="card-title bg-light text-primary py-2">Create Group</h3>
+    
+          <form action="/chat/group/create" method="POST" enctype="multipart/form-data">
+            <!-- To Get My ID To Store Group ID-->
+            <input type="hidden" name="IDs[]" value="<%= userId%>">
+
+            <div class="mb-3 row d-flex justify-content-center">
+              <div class="col-sm-10">
+                <input type="text" name="name" class="form-control"  required="required"  placeholder="Group Name">
+              </div>
+            </div>
+
+            <div class="">Choose Friends</div>
+            <% if(validateInput){%>
+              <div class="alert alert-warning"><%= validateInput.msg%></div>
+            <% } %>
+            <div class="d-flex row justify-content-center mx-2" style="overflow-y: scroll; height: 15vh; max-height: fit-content;">
+              <% for(let friend of friends){ %>
+              <div class="form-check py-2 d-flex align-items-center justify-content-start">
+                <input class="form-check-input ml-4" type="checkbox" name="IDs[]" value="<%= friend.id%>" id="flexCheckDefault">
+                <img class="rounded-circle  ml-2" src="/profile/<%= friend.image%>" width="25px" height="25px">
+                <label class="form-check-label mx-2" for="flexCheckDefault">
+                  <%= friend.name%>
+                </label>
+              </div>
+              <% } %>
+            </div>
+
+            <div class="mb-3 row d-flex justify-content-center">
+                <div class="col-sm-10">
+                  <p class="d-flex align-items-start">Choose Group Image</p>
+                    <input type="file" accept="image/*" name="image" class="form-control">
+                </div>
+            </div>
+    
+            <input type="submit" value="Create" class="btn btn-primary">
+          </form>
+    
+        </div>
+      </div>
+</div>
+
+<%- include('parts/footer')%>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/sockets/init.js"></script>
