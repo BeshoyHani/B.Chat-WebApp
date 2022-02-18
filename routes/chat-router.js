@@ -3,7 +3,7 @@ const chatController = require('../controllers/chat-controller');
 const multer = require('multer')
 const { diskStorage } = require('multer');
 const authGuard = require('./guards/auth-guard');
-const bodyParser = require('body-parser').urlencoded({extended: true});
+const bodyParser = require('body-parser').urlencoded({ extended: true });
 const check = require('express-validator').check;
 
 router.get('/:id', authGuard.isAuth, chatController.getChat);
@@ -27,10 +27,6 @@ router.get('/group/all', authGuard.isAuth, chatController.getGroupList);
 router.get('/group/create', authGuard.isAuth, chatController.getCreateGroup);
 
 router.post('/group/create', authGuard.isAuth,
-    bodyParser,
-    check('IDs').isArray({ min: 1 })
-        .withMessage('Choose at least one friend'),
-
     multer({
         storage: diskStorage({
             destination: (req, file, callback) => {
@@ -42,7 +38,10 @@ router.post('/group/create', authGuard.isAuth,
             }
         })
 
-    }).single('image'), chatController.createGroup);
+    }).single('image'),
+    check('IDs').isArray({ min: 2 })
+        .withMessage('Choose at least one friend'),
+    chatController.createGroup);
 
 router.get('/group/:id', authGuard.isAuth, chatController.getGroupMessages);
 
