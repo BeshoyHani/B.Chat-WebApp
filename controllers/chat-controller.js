@@ -97,6 +97,7 @@ exports.createGroup = (req, res, next) => {
             .catch(err => console.log('chat controller create group: ', err));
     }else{
         req.flash('createGroupError', validatorResult(req).array());
+        console.log(validatorResult(req).array())
         res.redirect(req.originalUrl);
     }
 }

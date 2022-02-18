@@ -3,7 +3,15 @@
 
     <div class="container py-4">
 
-    <% for(let friend of friends){ %>
+        <% if(friends.length === 0 ){ %>
+            <div class="alert alert-warning d-flex align-items-center my-2 justify-content-center">
+                You have't any friends yet!
+            </div>
+            <div class="alert alert-warning d-flex align-items-center my-2 justify-content-center">
+                Try to send friend request
+            </div>
+
+    <% } for(let friend of friends){ %>
     <div>
         <div class="card rounded d-flex row align-items-start my-3 col-sm-8 col-md-8 col-lg-12 col-xl-12">
 

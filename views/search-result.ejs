@@ -2,8 +2,12 @@
 <%- include('parts/navbar')%>
 
     <div class="container py-4">
+
+        <% if(searchResult.length === 0){ %>
+            <div class="alert alert-warning d-flex align-items-center my-2 justify-content-center">Oops! No result found</div>
+
+    <% } for(let user of searchResult){ %>
         
-    <% for(let user of searchResult){ %>
     <div>
         <div class="card rounded d-flex row align-items-start my-3 col-sm-8 col-md-8 col-lg-12 col-xl-12">
             
