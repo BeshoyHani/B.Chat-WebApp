@@ -5,9 +5,9 @@ B Chat is a real-time chat app built with socket.io.
 
 2) [Demo](https://www.youtube.com/watch?app=desktop&v=BZ5_daIlm0o)
 
-3) [Features](B-Chat-Features)
+3) [Features](#b-chat-features)
 
-4) [Tools](Tools-Used)
+4) [Tools](#tools-used)
 
 ## B Chat Features
 - Real time chat app.
