@@ -20,6 +20,7 @@ B Chat is a real-time chat app built with socket.io.
 
 ## Tools Used
 - Node JS 
+- Express
 - Mongo DB
 - BootStrap
 - EJS 
